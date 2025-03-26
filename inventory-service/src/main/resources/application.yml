@@ -1,5 +1,8 @@
 logging:
   level:
+    org:
+      apache:
+        kafka: OFF
     web: DEBUG
 
 server:
@@ -20,3 +23,10 @@ spring:
       ddl-auto: create-drop
     open-in-view: false
     show-sql: true
+  kafka:
+    bootstrap-servers: ${KAFKA_BROKER:localhost:9092}
+    topic:
+      teste: teste
+    consumer:
+      group-id: inventory-group
+      auto-offset-reset: latest
