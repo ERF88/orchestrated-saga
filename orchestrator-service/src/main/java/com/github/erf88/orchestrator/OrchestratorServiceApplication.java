@@ -1,4 +1,4 @@
-package com.github.erf88.orchestrated.orchestratorservice;
+package com.github.erf88.orchestrator;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
