@@ -2,6 +2,57 @@ version: '3'
 
 services:
 
+  order-db:
+    image: mongo:latest
+    container_name: order-db
+    restart: always
+    networks:
+      - orchestrated-saga
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=mongo
+    ports:
+      - "27017:27017"
+
+  product-db:
+    container_name: product-db
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: product-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /data/postgres
+    networks:
+      - orchestrated-saga
+    ports:
+      - "5432:5432"
+
+  payment-db:
+    container_name: payment-db
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: payment-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /data/postgres
+    networks:
+      - orchestrated-saga
+    ports:
+      - "5433:5432"
+
+  inventory-db:
+    container_name: inventory-db
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: inventory-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /data/postgres
+    networks:
+      - orchestrated-saga
+    ports:
+      - "5434:5432"
+
   kafka:
     container_name: kafka
     image: obsidiandynamics/kafka
@@ -10,7 +61,7 @@ services:
       - "2181:2181"
       - "9092:9092"
     networks:
-      - orchestrator-saga
+      - orchestrated-saga
     environment:
       KAFKA_LISTENERS: "INTERNAL://:29092,EXTERNAL://:9092"
       KAFKA_ADVERTISED_LISTENERS: "INTERNAL://kafka:29092,EXTERNAL://localhost:9092"
@@ -25,14 +76,14 @@ services:
 
   redpanda-console:
     container_name: redpanda
-    image: docker.redpanda.com/vectorized/console:latest
+    image: docker.redpanda.com/redpandadata/console:latest
     restart: on-failure
     entrypoint: /bin/sh
     command: -c "echo \"$$CONSOLE_CONFIG_FILE\" > /tmp/config.yml; /app/console"
     ports:
       - "8081:8080"
     networks:
-      - orchestrator-saga
+      - orchestrated-saga
     environment:
       CONFIG_FILEPATH: /tmp/config.yml
       CONSOLE_CONFIG_FILE: |
@@ -42,5 +93,5 @@ services:
       - "kafka"
 
 networks:
-  orchestrator-saga:
+  orchestrated-saga:
     driver: bridge
