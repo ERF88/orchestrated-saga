@@ -25,10 +25,10 @@ spring:
     show-sql: true
   kafka:
     bootstrap-servers: ${KAFKA_BROKER:localhost:9092}
+    consumer:
+      group-id: inventory-group
+      auto-offset-reset: latest
     topic:
       inventory-fail: inventory-fail
       inventory-success: inventory-success
       orchestrator: orchestrator
-    consumer:
-      group-id: inventory-group
-      auto-offset-reset: latest

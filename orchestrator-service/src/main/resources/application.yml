@@ -14,3 +14,8 @@ spring:
     consumer:
       group-id: orchestrator-group
       auto-offset-reset: latest
+    topic:
+      start-saga: start-saga
+      orchestrator: orchestrator
+      finish-fail: finish-fail
+      finish-success: finish-success
