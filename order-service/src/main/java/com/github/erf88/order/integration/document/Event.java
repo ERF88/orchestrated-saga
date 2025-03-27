@@ -1,10 +1,14 @@
 package com.github.erf88.order.integration.document;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 
+@Document(collection = "event")
 public record Event(
-    String id,
+    @Id String id,
     String transactionId,
     String orderId,
     Order payload,
