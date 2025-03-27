@@ -1,4 +1,4 @@
-package com.github.erf88.orchestrated.productvalidationservice;
+package com.github.erf88.productvalidation;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
