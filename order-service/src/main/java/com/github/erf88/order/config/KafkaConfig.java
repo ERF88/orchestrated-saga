@@ -1,6 +1,7 @@
 package com.github.erf88.order.config;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -9,9 +10,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
+import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.*;
 
 import java.util.Map;
+
+import static com.github.erf88.order.constants.OrderConstants.PARTITION_COUNT;
+import static com.github.erf88.order.constants.OrderConstants.REPLICA_COUNT;
 
 @Configuration
 @EnableKafka
@@ -52,5 +57,23 @@ public class KafkaConfig {
     @Bean
     public KafkaTemplate<String, String> kafkaTemplate(ProducerFactory<String, String> producerFactory) {
         return new KafkaTemplate<>(producerFactory);
+    }
+
+    @Bean
+    public NewTopic startSagaTopic(@Value("${spring.kafka.topic.start-saga}") String startSaga) {
+        return buildTopic(startSaga);
+    }
+
+    @Bean
+    public NewTopic notifyEndingTopic(@Value("${spring.kafka.topic.notify-ending}") String notifyEnding) {
+        return buildTopic(notifyEnding);
+    }
+
+    private NewTopic buildTopic(String name) {
+        return TopicBuilder
+            .name(name)
+            .partitions(PARTITION_COUNT)
+            .replicas(REPLICA_COUNT)
+            .build();
     }
 }

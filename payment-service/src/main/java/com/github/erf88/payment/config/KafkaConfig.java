@@ -1,6 +1,7 @@
 package com.github.erf88.payment.config;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -9,9 +10,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
+import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.*;
 
 import java.util.Map;
+
+import static com.github.erf88.payment.constants.PaymentConstants.PARTITION_COUNT;
+import static com.github.erf88.payment.constants.PaymentConstants.REPLICA_COUNT;
 
 @Configuration
 @EnableKafka
@@ -52,5 +57,28 @@ public class KafkaConfig {
     @Bean
     public KafkaTemplate<String, String> kafkaTemplate(ProducerFactory<String, String> producerFactory) {
         return new KafkaTemplate<>(producerFactory);
+    }
+
+    @Bean
+    public NewTopic orchestratorTopic(@Value("${spring.kafka.topic.orchestrator}") String orchestrator) {
+        return buildTopic(orchestrator);
+    }
+
+    @Bean
+    public NewTopic paymentFailTopic(@Value("${spring.kafka.topic.payment-fail}") String paymentFail) {
+        return buildTopic(paymentFail);
+    }
+
+    @Bean
+    public NewTopic paymentSuccessTopic(@Value("${spring.kafka.topic.payment-success}") String paymentSuccess) {
+        return buildTopic(paymentSuccess);
+    }
+
+    private NewTopic buildTopic(String name) {
+        return TopicBuilder
+            .name(name)
+            .partitions(PARTITION_COUNT)
+            .replicas(REPLICA_COUNT)
+            .build();
     }
 }
