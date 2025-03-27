@@ -1,4 +1,4 @@
-package com.github.erf88.productvalidation.config;
+package com.github.erf88.inventory.infra.config;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.NewTopic;
@@ -15,8 +15,8 @@ import org.springframework.kafka.core.*;
 
 import java.util.Map;
 
-import static com.github.erf88.productvalidation.constants.ProductValidationConstants.PARTITION_COUNT;
-import static com.github.erf88.productvalidation.constants.ProductValidationConstants.REPLICA_COUNT;
+import static com.github.erf88.inventory.core.constants.InventoryConstants.PARTITION_COUNT;
+import static com.github.erf88.inventory.core.constants.InventoryConstants.REPLICA_COUNT;
 
 @Configuration
 @EnableKafka
@@ -60,18 +60,18 @@ public class KafkaConfig {
     }
 
     @Bean
+    public NewTopic inventoryFailTopic(@Value("${spring.kafka.topic.inventory-fail}") String inventoryFail) {
+        return buildTopic(inventoryFail);
+    }
+
+    @Bean
+    public NewTopic inventorySuccessTopic(@Value("${spring.kafka.topic.inventory-success}") String inventorySuccess) {
+        return buildTopic(inventorySuccess);
+    }
+
+    @Bean
     public NewTopic orchestratorTopic(@Value("${spring.kafka.topic.orchestrator}") String orchestrator) {
         return buildTopic(orchestrator);
-    }
-
-    @Bean
-    public NewTopic productValidationFailTopic(@Value("${spring.kafka.topic.product-validation-fail}") String productValidationFail) {
-        return buildTopic(productValidationFail);
-    }
-
-    @Bean
-    public NewTopic productValidationSuccessTopic(@Value("${spring.kafka.topic.product-validation-success}") String productValidationSuccess) {
-        return buildTopic(productValidationSuccess);
     }
 
     private NewTopic buildTopic(String name) {

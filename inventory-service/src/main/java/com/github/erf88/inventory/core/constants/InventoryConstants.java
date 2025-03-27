@@ -1,9 +1,9 @@
-package com.github.erf88.productvalidation.constants;
+package com.github.erf88.inventory.core.constants;
 
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
-public final class ProductValidationConstants {
+public final class InventoryConstants {
 
     public static final int PARTITION_COUNT = 1;
     public static final int REPLICA_COUNT = 1;

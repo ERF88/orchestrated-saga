@@ -1,4 +1,4 @@
-package com.github.erf88.inventory.config;
+package com.github.erf88.orchestrator.infra.config;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.NewTopic;
@@ -15,8 +15,9 @@ import org.springframework.kafka.core.*;
 
 import java.util.Map;
 
-import static com.github.erf88.inventory.constants.InventoryConstants.PARTITION_COUNT;
-import static com.github.erf88.inventory.constants.InventoryConstants.REPLICA_COUNT;
+import static com.github.erf88.orchestrator.core.constants.OrchestratorConstants.PARTITION_COUNT;
+import static com.github.erf88.orchestrator.core.constants.OrchestratorConstants.REPLICA_COUNT;
+import static com.github.erf88.orchestrator.core.enums.Topics.*;
 
 @Configuration
 @EnableKafka
@@ -60,18 +61,58 @@ public class KafkaConfig {
     }
 
     @Bean
-    public NewTopic inventoryFailTopic(@Value("${spring.kafka.topic.inventory-fail}") String inventoryFail) {
-        return buildTopic(inventoryFail);
+    public NewTopic startSagaTopic() {
+        return buildTopic(START_SAGA.getTopic());
     }
 
     @Bean
-    public NewTopic inventorySuccessTopic(@Value("${spring.kafka.topic.inventory-success}") String inventorySuccess) {
-        return buildTopic(inventorySuccess);
+    public NewTopic orchestratorTopic() {
+        return buildTopic(ORCHESTRATOR.getTopic());
     }
 
     @Bean
-    public NewTopic orchestratorTopic(@Value("${spring.kafka.topic.orchestrator}") String orchestrator) {
-        return buildTopic(orchestrator);
+    public NewTopic finishFailTopic() {
+        return buildTopic(FINISH_FAIL.getTopic());
+    }
+
+    @Bean
+    public NewTopic finishSuccessTopic() {
+        return buildTopic(FINISH_SUCCESS.getTopic());
+    }
+
+    @Bean
+    public NewTopic productValidationFailTopic() {
+        return buildTopic(PRODUCT_VALIDATION_FAIL.getTopic());
+    }
+
+    @Bean
+    public NewTopic productValidationSuccessTopic() {
+        return buildTopic(PRODUCT_VALIDATION_SUCCESS.getTopic());
+    }
+
+    @Bean
+    public NewTopic paymentFailTopic() {
+        return buildTopic(PAYMENT_FAIL.getTopic());
+    }
+
+    @Bean
+    public NewTopic paymentSuccessTopic() {
+        return buildTopic(PAYMENT_SUCCESS.getTopic());
+    }
+
+    @Bean
+    public NewTopic inventoryFailTopic() {
+        return buildTopic(INVENTORY_FAIL.getTopic());
+    }
+
+    @Bean
+    public NewTopic inventorySuccessTopic() {
+        return buildTopic(INVENTORY_SUCCESS.getTopic());
+    }
+
+    @Bean
+    public NewTopic notifyEndingTopic() {
+        return buildTopic(NOTIFY_ENDING.getTopic());
     }
 
     private NewTopic buildTopic(String name) {
@@ -82,3 +123,4 @@ public class KafkaConfig {
             .build();
     }
 }
+

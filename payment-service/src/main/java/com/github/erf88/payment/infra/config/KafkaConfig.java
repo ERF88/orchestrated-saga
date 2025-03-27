@@ -1,4 +1,4 @@
-package com.github.erf88.order.config;
+package com.github.erf88.payment.infra.config;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.NewTopic;
@@ -15,8 +15,8 @@ import org.springframework.kafka.core.*;
 
 import java.util.Map;
 
-import static com.github.erf88.order.constants.OrderConstants.PARTITION_COUNT;
-import static com.github.erf88.order.constants.OrderConstants.REPLICA_COUNT;
+import static com.github.erf88.payment.core.constants.PaymentConstants.PARTITION_COUNT;
+import static com.github.erf88.payment.core.constants.PaymentConstants.REPLICA_COUNT;
 
 @Configuration
 @EnableKafka
@@ -60,13 +60,18 @@ public class KafkaConfig {
     }
 
     @Bean
-    public NewTopic startSagaTopic(@Value("${spring.kafka.topic.start-saga}") String startSaga) {
-        return buildTopic(startSaga);
+    public NewTopic orchestratorTopic(@Value("${spring.kafka.topic.orchestrator}") String orchestrator) {
+        return buildTopic(orchestrator);
     }
 
     @Bean
-    public NewTopic notifyEndingTopic(@Value("${spring.kafka.topic.notify-ending}") String notifyEnding) {
-        return buildTopic(notifyEnding);
+    public NewTopic paymentFailTopic(@Value("${spring.kafka.topic.payment-fail}") String paymentFail) {
+        return buildTopic(paymentFail);
+    }
+
+    @Bean
+    public NewTopic paymentSuccessTopic(@Value("${spring.kafka.topic.payment-success}") String paymentSuccess) {
+        return buildTopic(paymentSuccess);
     }
 
     private NewTopic buildTopic(String name) {

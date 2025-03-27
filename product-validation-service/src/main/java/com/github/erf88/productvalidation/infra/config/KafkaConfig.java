@@ -1,4 +1,4 @@
-package com.github.erf88.orchestrator.config;
+package com.github.erf88.productvalidation.infra.config;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.NewTopic;
@@ -15,9 +15,8 @@ import org.springframework.kafka.core.*;
 
 import java.util.Map;
 
-import static com.github.erf88.orchestrator.constants.OrchestratorConstants.PARTITION_COUNT;
-import static com.github.erf88.orchestrator.constants.OrchestratorConstants.REPLICA_COUNT;
-import static com.github.erf88.orchestrator.core.enums.Topics.*;
+import static com.github.erf88.productvalidation.core.constants.ProductValidationConstants.PARTITION_COUNT;
+import static com.github.erf88.productvalidation.core.constants.ProductValidationConstants.REPLICA_COUNT;
 
 @Configuration
 @EnableKafka
@@ -61,58 +60,18 @@ public class KafkaConfig {
     }
 
     @Bean
-    public NewTopic startSagaTopic() {
-        return buildTopic(START_SAGA.getTopic());
+    public NewTopic orchestratorTopic(@Value("${spring.kafka.topic.orchestrator}") String orchestrator) {
+        return buildTopic(orchestrator);
     }
 
     @Bean
-    public NewTopic orchestratorTopic() {
-        return buildTopic(ORCHESTRATOR.getTopic());
+    public NewTopic productValidationFailTopic(@Value("${spring.kafka.topic.product-validation-fail}") String productValidationFail) {
+        return buildTopic(productValidationFail);
     }
 
     @Bean
-    public NewTopic finishFailTopic() {
-        return buildTopic(FINISH_FAIL.getTopic());
-    }
-
-    @Bean
-    public NewTopic finishSuccessTopic() {
-        return buildTopic(FINISH_SUCCESS.getTopic());
-    }
-
-    @Bean
-    public NewTopic productValidationFailTopic() {
-        return buildTopic(PRODUCT_VALIDATION_FAIL.getTopic());
-    }
-
-    @Bean
-    public NewTopic productValidationSuccessTopic() {
-        return buildTopic(PRODUCT_VALIDATION_SUCCESS.getTopic());
-    }
-
-    @Bean
-    public NewTopic paymentFailTopic() {
-        return buildTopic(PAYMENT_FAIL.getTopic());
-    }
-
-    @Bean
-    public NewTopic paymentSuccessTopic() {
-        return buildTopic(PAYMENT_SUCCESS.getTopic());
-    }
-
-    @Bean
-    public NewTopic inventoryFailTopic() {
-        return buildTopic(INVENTORY_FAIL.getTopic());
-    }
-
-    @Bean
-    public NewTopic inventorySuccessTopic() {
-        return buildTopic(INVENTORY_SUCCESS.getTopic());
-    }
-
-    @Bean
-    public NewTopic notifyEndingTopic() {
-        return buildTopic(NOTIFY_ENDING.getTopic());
+    public NewTopic productValidationSuccessTopic(@Value("${spring.kafka.topic.product-validation-success}") String productValidationSuccess) {
+        return buildTopic(productValidationSuccess);
     }
 
     private NewTopic buildTopic(String name) {
@@ -123,4 +82,3 @@ public class KafkaConfig {
             .build();
     }
 }
-

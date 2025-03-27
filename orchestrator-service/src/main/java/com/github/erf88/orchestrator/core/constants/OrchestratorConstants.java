@@ -1,9 +1,9 @@
-package com.github.erf88.order.constants;
+package com.github.erf88.orchestrator.core.constants;
 
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
-public final class OrderConstants {
+public final class OrchestratorConstants {
 
     public static final int PARTITION_COUNT = 1;
     public static final int REPLICA_COUNT = 1;
