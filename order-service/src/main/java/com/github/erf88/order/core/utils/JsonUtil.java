@@ -1,6 +1,7 @@
 package com.github.erf88.order.core.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.erf88.order.core.dto.EventRequest;
 import com.github.erf88.order.integration.document.Event;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class JsonUtil {
-
     private final ObjectMapper objectMapper;
 
     public String toJson(Object object) {
@@ -22,9 +22,9 @@ public class JsonUtil {
         }
     }
 
-    public Event toEvent(String json) {
+    public EventRequest toEventRequest(String json) {
         try {
-            return objectMapper.readValue(json, Event.class);
+            return objectMapper.readValue(json, EventRequest.class);
         } catch (Exception e) {
             log.error("Error parsing json to Event", e);
             return null;
