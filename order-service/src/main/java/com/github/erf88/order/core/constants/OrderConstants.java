@@ -7,5 +7,6 @@ public final class OrderConstants {
 
     public static final int PARTITION_COUNT = 1;
     public static final int REPLICA_COUNT = 1;
+    public static final String TRANSACTION_ID_PATTERN = "%s_%s";
 
 }
